@@ -1,4 +1,4 @@
-# CF Redis Example App
+# CF Redis Example App [![Build Status](https://travis-ci.org/pivotal-cf/cf-redis-example-app.svg)](https://travis-ci.org/pivotal-cf/cf-redis-example-app)
 
 This app is an example of how you can consume a Cloud Foundry service within an app.
 
