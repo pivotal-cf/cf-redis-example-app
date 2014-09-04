@@ -1,0 +1,6 @@
+---
+applications:
+- name: redis-example-app
+  memory: 256M
+  instances: 1
+  path: .

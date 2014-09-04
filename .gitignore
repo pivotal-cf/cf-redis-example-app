@@ -1,0 +1,3 @@
+.rspec
+dump.rdb
+redis.log
