@@ -9,23 +9,31 @@ describe 'app' do
     Sinatra::Application.new
   end
 
+  def without_vcap_services
+    vcap_services = ENV.delete("VCAP_SERVICES")
+    yield
+    ENV.store("VCAP_SERVICES", vcap_services)
+  end
+
   let(:path) { "/#{key}" }
   let(:key) { 'foo' }
 
   context 'when there is no redis instance bound' do
     it 'returns 500 INTERNAL SERVICE ERROR' do
-      vcap_services = ENV.delete("VCAP_SERVICES")
-      get path
-      expect(last_response.status).to eq(500)
-      ENV.store("VCAP_SERVICES", vcap_services)
+      without_vcap_services do
+        get path
+        expect(last_response.status).to eq(500)
+      end
     end
 
     it 'returns binding instructions' do
-      get path
-      expect(last_response.body).to match('You must bind a Redis service instance to this application.')
-      expect(last_response.body).to match('You can run the following commands to create an instance and bind to it:')
-      expect(last_response.body).to match('\$ cf create-service p-redis development redis-instance')
-      expect(last_response.body).to match('\$ cf bind-service <app-name> redis-instance')
+      without_vcap_services do
+        get path
+        expect(last_response.body).to match('You must bind a Redis service instance to this application.')
+        expect(last_response.body).to match('You can run the following commands to create an instance and bind to it:')
+        expect(last_response.body).to match('\$ cf create-service p-redis development redis-instance')
+        expect(last_response.body).to match('\$ cf bind-service <app-name> redis-instance')
+      end
     end
   end
 
