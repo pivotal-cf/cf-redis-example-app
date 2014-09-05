@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'json'
 
+require 'app'
+
 describe 'app' do
 
   def app

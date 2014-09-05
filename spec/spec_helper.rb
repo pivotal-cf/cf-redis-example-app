@@ -1,24 +1,27 @@
-require 'app'
-require 'rspec'
-require 'rack/test'
 require 'pry'
 
-require 'support/redis_server'
-
-REDIS = RedisServer.new(
-  host: "localhost",
-  port: 6380,
-  password: "p4ssw0rd"
-)
-
+require 'rack/test'
 RSpec.configure do |config|
   config.include Rack::Test::Methods
+end
 
-  config.before(:suite) do
-    REDIS.start
-  end
+if ENV.has_key?('VCAP_SERVICES')
+  puts "VCAP_SERVICES env set, not starting test redis-server"
+else
+  require 'support/redis_server'
+  REDIS = RedisServer.new(
+    host: "localhost",
+    port: 6380,
+    password: "p4ssw0rd"
+  )
 
-  config.after(:suite) do
-    REDIS.stop
+  RSpec.configure do |config|
+    config.before(:suite) do
+      REDIS.start
+    end
+
+    config.after(:suite) do
+      REDIS.stop
+    end
   end
 end
