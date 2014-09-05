@@ -14,8 +14,10 @@ describe 'app' do
 
   context 'when there is no redis instance bound' do
     it 'returns 500 INTERNAL SERVICE ERROR' do
+      vcap_services = ENV.delete("VCAP_SERVICES")
       get path
       expect(last_response.status).to eq(500)
+      ENV.store("VCAP_SERVICES", vcap_services)
     end
 
     it 'returns binding instructions' do
