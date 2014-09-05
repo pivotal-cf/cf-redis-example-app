@@ -27,7 +27,7 @@ describe 'app' do
 
   context 'when there is a redis instance bound' do
     before do
-      ENV['VCAP_SERVICES'] = {
+      ENV["VCAP_SERVICES"] ||= {
         'redis' => {
            'name' => 'redis',
            'label' => 'redis',
