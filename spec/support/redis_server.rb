@@ -15,7 +15,7 @@ class RedisServer
   def start
     process.start
   rescue ChildProcess::Error
-    warn "redis-server could not start. Do you have it installed and on your PATH?"
+    fail "redis-server could not start. Do you have it installed and on your PATH?"
     exit 1
   end
 
