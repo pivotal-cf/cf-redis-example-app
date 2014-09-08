@@ -6,7 +6,7 @@ RSpec.configure do |config|
 end
 
 if ENV.has_key?('VCAP_SERVICES')
-  puts "VCAP_SERVICES env set, not starting test redis-server"
+  puts "Not starting local redis-server, using the one defined in VCAP_SERVICES"
 else
   require 'support/redis_server'
   REDIS = RedisServer.new(
