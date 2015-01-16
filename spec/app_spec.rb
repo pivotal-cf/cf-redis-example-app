@@ -145,9 +145,9 @@ describe 'app' do
           put path, payload
         end
 
-        it 'returns 200 OK' do
+        it 'returns 410 ' do
           delete path
-          expect(last_response.status).to eq(200)
+          expect(last_response.status).to eq(410)
         end
 
         it 'returns success' do
