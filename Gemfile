@@ -8,7 +8,5 @@ gem 'redis'
 group :test do
   gem 'rack-test'
   gem 'rspec'
-  gem 'guard'
-  gem 'guard-rspec', require: false
   gem 'childprocess'
 end
