@@ -45,5 +45,5 @@ Deletes a Redis key spcified by the path. Example:
 
 Returns the Redis configuration value at the key specified by the path. Example:
 
-  $ curl -X GET $APP/config/max_clients
-  100
+    $ curl -X GET $APP/config/max_clients
+    100
