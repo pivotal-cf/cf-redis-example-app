@@ -15,6 +15,7 @@ Example:
      $ cf push redis-example-app --no-start
      $ cf create-service p-redis development redis
      $ cf bind-service redis-example-app redis
+     $ cf start redis-example-app
 
 ### Endpoints
 
