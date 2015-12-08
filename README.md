@@ -29,7 +29,7 @@ Sets the value stored in Redis at the specified key to a value posted in the 'da
 
 #### GET /:key
 
-Returns the value stored in Redis at by the key specified by the path. Example:
+Returns the value stored in Redis at the key specified by the path. Example:
 
     $ curl -X GET $APP/foo
     bar
@@ -41,3 +41,9 @@ Deletes a Redis key spcified by the path. Example:
     $ curl -X DELETE $APP/foo
     success
 
+#### GET /config/:item
+
+Returns the Redis configuration value at the key specified by the path. Example:
+
+  $ curl -X GET $APP/config/max_clients
+  100
