@@ -290,6 +290,15 @@ describe CF::App::Credentials do
                                                                                               ])
           end
         end
+
+        describe CF::App::Credentials do
+          it 'allows users to inject their own env which is useful for testing' do
+            my_env = {}
+            vcap_services[cleardb_key][0]['credentials']['name'] = 'myname'
+            my_env['VCAP_SERVICES'] = JSON.dump(vcap_services)
+            expect(CF::App::Credentials.new(my_env).find_by_service_name('master-db')['name']).to eq('myname')
+          end
+        end
       end
     end
   end

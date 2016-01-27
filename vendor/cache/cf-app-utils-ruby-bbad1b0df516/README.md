@@ -40,7 +40,7 @@ CF::App::Credentials.find_by_service_name('master-db')
 CF::App::Credentials.find_by_service_tag('relational')
 
 # Get credentials for all service instances with the given tag
-CF::APP::Credentials.find_all_by_service_tag('relational')
+CF::App::Credentials.find_all_by_service_tag('relational')
 
 # Get credentials for all service instances that match all of the given tags
 CF::App::Credentials.find_all_by_all_service_tags(['cleardb', 'relational'])
@@ -56,4 +56,9 @@ The keys in the hash are strings. For example, to get the `uri` value you can do
 
 ```ruby
 cleardb_url = credentials['uri']
+```
+
+```ruby
+# Inject your own environment variables
+CF::App::Credentials.new(my_env)
 ```

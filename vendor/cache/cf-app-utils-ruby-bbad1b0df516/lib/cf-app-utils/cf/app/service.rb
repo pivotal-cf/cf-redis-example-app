@@ -2,7 +2,10 @@ require 'json'
 
 module CF::App
   class Service #:nodoc:
-    class << self
+    def initialize(env = ENV)
+      @env = env
+    end
+
       def find_by_name(name)
         all.detect do |service|
           service['name'] == name
@@ -40,8 +43,7 @@ module CF::App
       private
 
       def all
-        @services ||= JSON.parse(ENV['VCAP_SERVICES']).values.flatten
+        @services ||= JSON.parse(@env['VCAP_SERVICES']).values.flatten
       end
-    end
   end
 end

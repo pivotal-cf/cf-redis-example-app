@@ -1,20 +1,19 @@
 # -*- encoding: utf-8 -*-
-# stub: cf-app-utils 0.3 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "cf-app-utils"
-  s.version = "0.3"
+  s.version = "0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.require_paths = ["lib"]
   s.authors = ["Cloud Foundry"]
-  s.date = "2015-02-27"
+  s.date = "2016-01-27"
   s.description = "Helper methods for apps running on Cloud Foundry"
   s.email = ["vcap-dev@cloudfoundry.org"]
-  s.files = ["LICENSE.txt", "README.md", "lib/cf-app-utils", "lib/cf-app-utils.rb", "lib/cf-app-utils/cf", "lib/cf-app-utils/cf.rb", "lib/cf-app-utils/cf/app", "lib/cf-app-utils/cf/app/credentials.rb", "lib/cf-app-utils/cf/app/service.rb"]
+  s.files = ["lib/cf-app-utils", "lib/cf-app-utils/cf", "lib/cf-app-utils/cf/app", "lib/cf-app-utils/cf/app/credentials.rb", "lib/cf-app-utils/cf/app/service.rb", "lib/cf-app-utils/cf.rb", "lib/cf-app-utils.rb", "LICENSE.txt", "README.md"]
   s.homepage = ""
   s.licenses = ["MIT"]
-  s.rubygems_version = "2.4.2"
+  s.require_paths = ["lib"]
+  s.rubygems_version = "2.0.14"
   s.summary = "Helper methods for apps running on Cloud Foundry"
 
   if s.respond_to? :specification_version then
