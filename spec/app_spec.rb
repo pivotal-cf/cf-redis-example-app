@@ -37,6 +37,40 @@ describe 'app' do
     end
   end
 
+  context 'when there is a redis instance bound without tags' do
+    before do
+      ENV["VCAP_SERVICES"] ||= {
+        'redis' => {
+           'name' => 'redis',
+           'label' => 'redis',
+           'tags' => [],
+           'plan' => 'default',
+           'credentials' => {
+             'password' => REDIS.password,
+             'host' => REDIS.host,
+             'port' => REDIS.port
+           }
+        }
+      }.to_json
+    end
+
+    describe 'PUT /:key' do
+      context 'with data' do
+        let(:payload) { { data: 'bar' } }
+
+        it 'returns 201 CREATED' do
+          put path, payload
+          expect(last_response.status).to eq(201)
+        end
+
+        it 'returns "success"' do
+          put path, payload
+          expect(last_response.body).to match('success')
+        end
+      end
+    end
+  end
+
   context 'when there is a redis instance bound' do
     before do
       ENV["VCAP_SERVICES"] ||= {

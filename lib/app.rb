@@ -69,7 +69,12 @@ end
 def redis_credentials
   if ENV['VCAP_SERVICES']
     all_pivotal_redis_credentials = CF::App::Credentials.find_all_by_all_service_tags(['redis', 'pivotal'])
-    all_pivotal_redis_credentials && all_pivotal_redis_credentials.first
+    if all_pivotal_redis_credentials && all_pivotal_redis_credentials.first
+      all_pivotal_redis_credentials && all_pivotal_redis_credentials.first
+    else
+      redis_service_credentials = CF::App::Credentials.find_by_service_name('redis')
+      redis_service_credentials
+    end
   end
 end
 
