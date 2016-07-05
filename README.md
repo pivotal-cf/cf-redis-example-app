@@ -6,6 +6,8 @@ It allows you to set, get and delete Redis key/value pairs using RESTful endpoin
 
 ### Getting Started
 
+#### Using Pivotal Redis service
+
 Install the app by pushing it to your Cloud Foundry and binding with the Pivotal Redis service
 
 Example:
@@ -15,6 +17,22 @@ Example:
      $ cf push redis-example-app --no-start
      $ cf create-service p-redis development redis
      $ cf bind-service redis-example-app redis
+     $ cf start redis-example-app
+     
+#### Using Redis-Labs CUPS
+
+Install the app by pushing it to your Cloud Foundry and binding with a Redis-Labs [CUPS](https://docs.cloudfoundry.org/devguide/services/user-provided.html)
+
+You will need to sign up for [redis-as-a-service](https://redislabs.com/) and then provide the credetials of your redis instance when running cf cups.
+
+Example:
+
+     $ git clone git@github.com:pivotal-cf/cf-redis-example-app.git
+     $ cd cf-redis-example-app
+     $ cf push redis-example-app --no-start
+     $ cf cups redis -p "host, password, port"
+     $ cf bind-service redis-example-app redis
+     $ cf restage redis-example-app
      $ cf start redis-example-app
 
 ### Endpoints
