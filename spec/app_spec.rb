@@ -91,6 +91,28 @@ describe 'app' do
       }.to_json
     end
 
+    describe 'GET /' do
+      context 'with data' do
+        before do
+          put "/key1", { data: "value1" }
+          put "/key2", { data: "value2" }
+          put "/key3", { data: "value3" }
+        end
+
+        it 'returns 200 OK' do
+          get "/"
+          expect(last_response.status).to eq(200)
+        end
+
+        it 'lists all key and values' do
+          get "/"
+          expect(last_response.body).to include(
+            "key1:value1", "key2:value2", "key3:value3"
+          )
+        end
+      end
+    end
+
     describe 'PUT /:key' do
       context 'with data' do
         let(:payload) { { data: 'bar' } }
