@@ -67,12 +67,14 @@ delete '/:key' do
 end
 
 def redis_credentials
+  service_name = ENV['service_name'] || "redis"
+
   if ENV['VCAP_SERVICES']
     all_pivotal_redis_credentials = CF::App::Credentials.find_all_by_all_service_tags(['redis', 'pivotal'])
     if all_pivotal_redis_credentials && all_pivotal_redis_credentials.first
       all_pivotal_redis_credentials && all_pivotal_redis_credentials.first
     else
-      redis_service_credentials = CF::App::Credentials.find_by_service_name('redis')
+      redis_service_credentials = CF::App::Credentials.find_by_service_name(service_name)
       redis_service_credentials
     end
   end
