@@ -23,7 +23,7 @@ Example:
 
 Install the app by pushing it to your Cloud Foundry and binding with a Redis-Labs [CUPS](https://docs.cloudfoundry.org/devguide/services/user-provided.html)
 
-You will need to sign up for [redis-as-a-service](https://redislabs.com/) and then provide the credetials of your redis instance when running cf cups.
+You will need to sign up for [redis-as-a-service](https://redislabs.com/) and then provide the credentials of your redis instance when running cf cups.
 
 Example:
 
