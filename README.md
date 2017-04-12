@@ -15,7 +15,7 @@ Example:
      $ git clone git@github.com:pivotal-cf/cf-redis-example-app.git
      $ cd cf-redis-example-app
      $ cf push redis-example-app --no-start
-     $ cf create-service p-redis development redis
+     $ cf create-service p-redis dedicated-vm redis
      $ cf bind-service redis-example-app redis
      $ cf start redis-example-app
      
