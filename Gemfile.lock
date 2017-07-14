@@ -16,7 +16,7 @@ GEM
       rack
     rack-test (0.6.3)
       rack (>= 1.0)
-    redis (3.2.2)
+    redis (3.3.3)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -48,4 +48,4 @@ DEPENDENCIES
   sinatra
 
 BUNDLED WITH
-   1.11.2
+   1.15.1
