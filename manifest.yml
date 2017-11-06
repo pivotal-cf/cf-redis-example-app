@@ -4,3 +4,4 @@ applications:
   memory: 256M
   instances: 1
   path: .
+  buildpack: ruby_buildpack
