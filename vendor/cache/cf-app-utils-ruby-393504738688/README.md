@@ -30,7 +30,9 @@ Require and use the gem in your application:
 require 'cf-app-utils'
 ```
 
-You can then grab the credentials hash:
+## Credentials
+
+grabbing the credentials hash:
 
 ```ruby
 # Get credentials for the service instance with the given name
@@ -59,6 +61,47 @@ cleardb_url = credentials['uri']
 ```
 
 ```ruby
-# Inject your own environment variables
+# Inject your own environment variables for testing
 CF::App::Credentials.new(my_env)
 ```
+
+## Environment
+
+12 Factor applications read their configuration from the environment. Applications that have not been designed for CF may be expecting configuration to exist in the environment at their own top level key (e.g. `CLOUDINARY_URL`). Rather than modifying an app to read from `VCAP_SERVICES` the `CF::App::Environment` class will set environment variables based on `VCAP_SERVICES` and configuration. 
+
+Example:
+
+```ruby
+configuration = [{ 
+ "name" => "CLOUDINARY_URL",
+ "method" => "name",
+ "parameter => "cloudinary",
+ "key" => "url"
+}]
+
+CF::App::Environment.set!(configuration)
+
+
+ `echo $CLOUDINARY_URL`
+
+ => "http://example.com"
+```
+
+alternatively, given a yaml file `env.yml`
+
+```yaml
+- name: TWITTER_OAUTH_TOKEN_SECRET
+  method: name
+  parameter: 'my-twitter'
+  key: 'TWITTER_OAUTH_TOKEN_SECRET'
+```
+
+```ruby
+CF::App:Environment.set_from_yaml!(env.yml)
+
+ `echo TWITTER_OAUTH_TOKEN_SECRET`
+
+ => "http://example.com"
+```
+
+Use with caution: This method will set actual environment variables.
