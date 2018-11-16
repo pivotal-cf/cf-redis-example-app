@@ -8,16 +8,16 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Cloud Foundry".freeze]
-  s.date = "2018-02-07"
+  s.date = "2018-11-16"
   s.description = "Helper methods for apps running on Cloud Foundry".freeze
   s.email = ["vcap-dev@cloudfoundry.org".freeze]
   s.files = ["LICENSE.txt".freeze, "README.md".freeze, "lib/cf-app-utils".freeze, "lib/cf-app-utils.rb".freeze, "lib/cf-app-utils/cf".freeze, "lib/cf-app-utils/cf.rb".freeze, "lib/cf-app-utils/cf/app".freeze, "lib/cf-app-utils/cf/app/credentials.rb".freeze, "lib/cf-app-utils/cf/app/environment.rb".freeze, "lib/cf-app-utils/cf/app/service.rb".freeze]
   s.homepage = "".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "2.6.13".freeze
+  s.rubygems_version = "2.6.11".freeze
   s.summary = "Helper methods for apps running on Cloud Foundry".freeze
 
-  s.installed_by_version = "2.6.13" if s.respond_to? :installed_by_version
+  s.installed_by_version = "2.6.11" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
