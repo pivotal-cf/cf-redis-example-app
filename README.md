@@ -32,7 +32,6 @@ Example:
      $ cf push redis-example-app --no-start
      $ cf cups redis -p "host, password, port"
      $ cf bind-service redis-example-app redis
-     $ cf restage redis-example-app
      $ cf start redis-example-app
 
 ### Endpoints
