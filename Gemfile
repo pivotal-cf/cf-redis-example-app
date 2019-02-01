@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'cf-app-utils', git: 'http://github.com/cloudfoundry/cf-app-utils-ruby.git'
-
+gem 'cf-app-utils'
 gem 'sinatra'
 gem 'redis'
 
