@@ -81,10 +81,23 @@ def redis_credentials
 end
 
 def redis_client
-  @client ||= Redis.new(
-    host: redis_credentials.fetch('host'),
-    port: redis_credentials.fetch('port'),
-    password: redis_credentials.fetch('password'),
-    timeout: 30
-  )
+    tls_enabled = ENV['tls_enabled'] || false
+
+    if tls_enabled
+      @client ||= Redis.new(
+        host: redis_credentials.fetch('host'),
+        port: redis_credentials.fetch('tls_port'),
+        password: redis_credentials.fetch('password'),
+        ssl: true,
+        timeout: 30
+      )
+    else
+      @client ||= Redis.new(
+        host: redis_credentials.fetch('host'),
+        port: redis_credentials.fetch('port'),
+        password: redis_credentials.fetch('password'),
+        timeout: 30
+      )
+    end
+
 end
