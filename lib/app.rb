@@ -66,6 +66,47 @@ delete '/:key' do
   end
 end
 
+get '/tls/v1/:key' do
+  get_key_with_tls_version(params[:key], 'TLSv1')
+end
+
+get '/tls/v1.1/:key' do
+  get_key_with_tls_version(params[:key], 'TLSv1_1')
+end
+
+get '/tls/v1.2/:key' do
+  get_key_with_tls_version(params[:key], 'TLSv1_2')
+end
+
+def get_key_with_tls_version(key, version)
+  begin
+    value = redis_client_tls(version).get(key)
+    if value
+      status 200
+      body value
+    else
+      status 404
+      body 'key not present'
+    end
+  rescue StandardError => e
+      status 418
+      body 'protocol not supported: '+e.message
+  end
+end
+
+def redis_client_tls(version='TLSv1')
+  @client ||= Redis.new(
+    host: redis_credentials.fetch('host'),
+    port: redis_credentials.fetch('tls_port'),
+    password: redis_credentials.fetch('password'),
+    ssl: true,
+    ssl_params: {
+      ssl_version: version
+    },
+    timeout: 30
+  )
+end
+
 def redis_credentials
   service_name = ENV['service_name'] || "redis"
 
