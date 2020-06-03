@@ -101,24 +101,11 @@ def redis_client_tls(version='TLSv1')
     password: redis_credentials.fetch('password'),
     ssl: true,
     ssl_params: {
-      ssl_version: version
+      ssl_version: version,
+      verify_mode: OpenSSL::SSL::VERIFY_NONE
     },
     timeout: 30
   )
-end
-
-def redis_credentials
-  service_name = ENV['service_name'] || "redis"
-
-  if ENV['VCAP_SERVICES']
-    all_pivotal_redis_credentials = CF::App::Credentials.find_all_by_all_service_tags(['redis', 'pivotal'])
-    if all_pivotal_redis_credentials && all_pivotal_redis_credentials.first
-      all_pivotal_redis_credentials && all_pivotal_redis_credentials.first
-    else
-      redis_service_credentials = CF::App::Credentials.find_by_service_name(service_name)
-      redis_service_credentials
-    end
-  end
 end
 
 def redis_client
@@ -140,5 +127,18 @@ def redis_client
         timeout: 30
       )
     end
+end
 
+def redis_credentials
+  service_name = ENV['service_name'] || "redis"
+
+  if ENV['VCAP_SERVICES']
+    all_pivotal_redis_credentials = CF::App::Credentials.find_all_by_all_service_tags(['redis', 'pivotal'])
+    if all_pivotal_redis_credentials && all_pivotal_redis_credentials.first
+      all_pivotal_redis_credentials && all_pivotal_redis_credentials.first
+    else
+      redis_service_credentials = CF::App::Credentials.find_by_service_name(service_name)
+      redis_service_credentials
+    end
+  end
 end
