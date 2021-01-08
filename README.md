@@ -30,7 +30,7 @@ Example:
      $ git clone git@github.com:pivotal-cf/cf-redis-example-app.git
      $ cd cf-redis-example-app
      $ cf push redis-example-app --no-start
-     $ cf cups redis -p "host, password, port"
+     $ cf cups redis -p '{"host":"redis_host","password":"redis_password","port":"redis_port"}'
      $ cf bind-service redis-example-app redis
      $ cf start redis-example-app
 
