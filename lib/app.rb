@@ -14,6 +14,17 @@ You can run the following commands to create an instance and bind to it:
   end
 end
 
+get '/' do
+  output = redis_client.keys("*").collect do |key|
+    key + ":" + redis_client.get(key)
+  end.to_a.join("<br/>")
+
+  output +=("<br/>"*5)
+
+  body output
+  status 200
+end
+
 put '/:key' do
   data = params[:data]
   if data
