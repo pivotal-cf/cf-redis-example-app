@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'json'
 
 require 'app'
+require_relative 'redis_getter'
 
 describe 'app' do
 
@@ -48,7 +49,8 @@ describe 'app' do
            'credentials' => {
              'password' => REDIS.password,
              'host' => REDIS.host,
-             'port' => REDIS.port
+             'port' => REDIS.port,
+             'tls_port' => REDIS.tls_port
            }
         }
       }.to_json
@@ -85,10 +87,13 @@ describe 'app' do
            'credentials' => {
              'password' => REDIS.password,
              'host' => REDIS.host,
-             'port' => REDIS.port
+             'port' => REDIS.port,
+             'tls_port' => REDIS.tls_port
            }
         }
       }.to_json
+
+      ENV['SSL_CERT_FILE'] = "#{__dir__}/support/ca.crt"
     end
 
     describe 'PUT /:key' do
@@ -122,38 +127,19 @@ describe 'app' do
     end
 
     describe 'GET /:key' do
-      context 'when the key does not exist' do
-        let(:key) { 'nonexistant' }
+      it_behaves_like 'redis get endpoint'
+    end
 
-        it 'returns 404 NOT FOUND' do
-          get path
-          expect(last_response.status).to eq(404)
-        end
+    describe '/tls/v1.2/:key' do
+      let(:path) { "/tls/v1.2/#{key}" }
 
-        it 'reports that the key is not present' do
-          get path
-          expect(last_response.body).to match('key not present')
-        end
-      end
+      it_behaves_like 'redis get endpoint'
+    end
 
-      context 'when the key exists' do
-        let(:value) { 'a value' }
-        let(:payload) { { data: value } }
+    describe '/tls/v1.3/:key' do
+      let(:path) { "/tls/v1.3/#{key}" }
 
-        before do
-          put path, payload
-        end
-
-        it 'returns 200 OK' do
-          get path
-          expect(last_response.status).to eq(200)
-        end
-
-        it 'returns the value' do
-          get path
-          expect(last_response.body).to eq(value)
-        end
-      end
+      it_behaves_like 'redis get endpoint'
     end
 
     describe 'GET /config/:item' do

@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'redis'
 require 'cf-app-utils'
+require_relative 'redis_tls'
 
 before do
   unless redis_credentials
@@ -78,6 +79,10 @@ get '/tls/v1.2/:key' do
   get_key_with_tls_version(params[:key], 'TLSv1_2')
 end
 
+get '/tls/v1.3/:key' do
+  get_key_with_tls_version(params[:key], 'TLSv1_3')
+end
+
 def get_key_with_tls_version(key, version)
   begin
     value = redis_client_tls(version).get(key)
@@ -95,6 +100,14 @@ def get_key_with_tls_version(key, version)
 end
 
 def redis_client_tls(version='TLSv1')
+  if version == 'TLSv1_3'
+    return @client_tls_13 ||= RedisTLS13.new(
+      host: redis_credentials.fetch('host'),
+      port: redis_credentials.fetch('tls_port'),
+      password: redis_credentials.fetch('password')
+    )
+  end
+
   @client ||= Redis.new(
     host: redis_credentials.fetch('host'),
     port: redis_credentials.fetch('tls_port'),
