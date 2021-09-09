@@ -10,6 +10,7 @@ else
   REDIS = RedisServer.new(
     host: "localhost",
     port: 6380,
+    tls_port: 16380,
     password: "p4ssw0rd"
   )
 
