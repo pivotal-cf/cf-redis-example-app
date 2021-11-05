@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     cf-app-utils (0.6)
-    childprocess (4.0.0)
+    childprocess (4.1.0)
     diff-lcs (1.4.4)
     logger (1.4.3)
     mustermann (1.1.1)
