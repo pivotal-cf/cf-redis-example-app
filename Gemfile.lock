@@ -36,7 +36,7 @@ GEM
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
     tilt (2.0.10)
-    tttls1.3 (0.2.15)
+    tttls1.3 (0.2.16)
       logger
       openssl
 
