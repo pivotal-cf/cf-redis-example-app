@@ -38,6 +38,11 @@ get '/:key' do
   end
 end
 
+get '/status/health' do
+  status 200
+  body 'app is running'
+end
+
 get '/config/:item' do
   unless params[:item]
     status 400
