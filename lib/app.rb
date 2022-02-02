@@ -135,6 +135,9 @@ def redis_client
         port: redis_credentials.fetch('tls_port'),
         password: redis_credentials.fetch('password'),
         ssl: true,
+        ssl_params: {
+          verify_mode: OpenSSL::SSL::VERIFY_NONE
+        },
         timeout: 30
       )
     else
