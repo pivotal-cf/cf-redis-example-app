@@ -51,6 +51,3 @@ DEPENDENCIES
   rspec
   sinatra
   tttls1.3 (>= 0.2.15)
-
-BUNDLED WITH
-   2.2.30
