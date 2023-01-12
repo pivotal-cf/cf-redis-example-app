@@ -39,6 +39,7 @@ GEM
     tttls1.3 (0.2.15)
       logger
       openssl
+    webrick (1.7.0)
 
 PLATFORMS
   ruby
@@ -51,3 +52,5 @@ DEPENDENCIES
   rspec
   sinatra
   tttls1.3 (>= 0.2.15)
+  webrick (~> 1.7)
+
