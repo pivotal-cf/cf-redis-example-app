@@ -6,12 +6,12 @@ GEM
     diff-lcs (1.5.0)
     ipaddr (1.2.3)
     logger (1.4.4)
-    mustermann (3.0.0)
+    mustermann (2.0.2)
       ruby2_keywords (~> 0.0.1)
     openssl (2.2.1)
       ipaddr
     rack (2.2.6.2)
-    rack-protection (3.0.5)
+    rack-protection (2.2.3)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -30,10 +30,10 @@ GEM
       rspec-support (~> 3.11.0)
     rspec-support (3.11.0)
     ruby2_keywords (0.0.5)
-    sinatra (3.0.5)
-      mustermann (~> 3.0)
-      rack (~> 2.2, >= 2.2.4)
-      rack-protection (= 3.0.5)
+    sinatra (2.2.3)
+      mustermann (~> 2.0)
+      rack (~> 2.2)
+      rack-protection (= 2.2.3)
       tilt (~> 2.0)
     tilt (2.1.0)
     tttls1.3 (0.2.15)
@@ -50,6 +50,7 @@ DEPENDENCIES
   rack-test
   redis
   rspec
-  sinatra
+  sinatra (= 2.2.3)
   tttls1.3 (>= 0.2.15)
   webrick (~> 1.8)
+
