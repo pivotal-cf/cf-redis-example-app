@@ -10,7 +10,7 @@ GEM
       ruby2_keywords (~> 0.0.1)
     openssl (2.2.1)
       ipaddr
-    rack (2.2.3)
+    rack (2.2.6.2)
     rack-protection (2.2.0)
       rack
     rack-test (1.1.0)
