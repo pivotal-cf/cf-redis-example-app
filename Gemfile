@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'cf-app-utils'
-gem 'sinatra', "= 2.2.3"
+gem 'sinatra', "3.0.6"
 gem 'redis'
 gem 'tttls1.3', '>=0.2.15'
 gem "webrick", "~> 1.8"
