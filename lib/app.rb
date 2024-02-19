@@ -129,7 +129,14 @@ end
 def redis_client
     tls_enabled = ENV['tls_enabled'] || false
 
-    if tls_enabled
+    if redis_credentials.key?('sentinels')
+      @client ||= Redis.new(
+        host: redis_credentials.fetch('master_name'),
+        password: redis_credentials.fetch('password'),
+        sentinels: redis_credentials.fetch('sentinels').map { | sentinel |  { host: sentinel["host"], port: sentinel["port"] } },
+        timeout: 30
+      )
+    elsif tls_enabled
       @client ||= Redis.new(
         host: redis_credentials.fetch('host'),
         port: redis_credentials.fetch('tls_port'),
