@@ -2,6 +2,7 @@ require 'sinatra'
 require 'redis'
 require 'cf-app-utils'
 require_relative 'redis_tls'
+require_relative 'client'
 
 before do
   unless redis_credentials
@@ -12,6 +13,39 @@ You can run the following commands to create an instance and bind to it:
 
   $ cf create-service p-redis development redis-instance
   $ cf bind-service <app-name> redis-instance})
+  end
+end
+
+get '/master' do
+  value = sentinel_client.get_master_info.to_json
+  if value
+    status 200
+    body value
+  else
+    status 400
+    body 'something went wrong'
+  end
+end
+
+get '/replicas' do
+  value = sentinel_client.get_replicas_info.to_json
+  if value
+    status 200
+    body value
+  else
+    status 400
+    body 'something went wrong'
+  end
+end
+
+get '/failover' do
+  value = sentinel_client.fail_over.to_json
+  if value
+    status 200
+    body value
+  else
+    status 400
+    body 'something went wrong'
   end
 end
 
@@ -113,48 +147,24 @@ def redis_client_tls(version='TLSv1')
     )
   end
 
-  @client ||= Redis.new(
-    host: redis_credentials.fetch('host'),
-    port: redis_credentials.fetch('tls_port'),
-    password: redis_credentials.fetch('password'),
-    ssl: true,
-    ssl_params: {
-      ssl_version: version,
-      verify_mode: OpenSSL::SSL::VERIFY_NONE
-    },
-    timeout: 30
-  )
+  @client ||= RedisClient.tls(redis_credentials, version)
+end
+
+def sentinel_client
+  @sentinel_client ||= SentinelClient.new(redis_credentials.fetch("master_name"), redis_credentials.fetch("sentinels").first)
 end
 
 def redis_client
-    tls_enabled = ENV['tls_enabled'] || false
+  tls_enabled = ENV['tls_enabled'] || false
 
-    if redis_credentials.key?('sentinels')
-      @client ||= Redis.new(
-        host: redis_credentials.fetch('master_name'),
-        password: redis_credentials.fetch('password'),
-        sentinels: redis_credentials.fetch('sentinels').map { | sentinel |  { host: sentinel["host"], port: sentinel["port"] } },
-        timeout: 30
-      )
-    elsif tls_enabled
-      @client ||= Redis.new(
-        host: redis_credentials.fetch('host'),
-        port: redis_credentials.fetch('tls_port'),
-        password: redis_credentials.fetch('password'),
-        ssl: true,
-        ssl_params: {
-          verify_mode: OpenSSL::SSL::VERIFY_NONE
-        },
-        timeout: 30
-      )
-    else
-      @client ||= Redis.new(
-        host: redis_credentials.fetch('host'),
-        port: redis_credentials.fetch('port'),
-        password: redis_credentials.fetch('password'),
-        timeout: 30
-      )
-    end
+  if redis_credentials.key?('sentinels')
+    @client ||= RedisClient.using_sentinel(redis_credentials)
+  elsif tls_enabled
+    @client ||= RedisClient.tls(redis_credentials)
+  else
+    @client ||= RedisClient.new(redis_credentials)
+  end
+
 end
 
 def redis_credentials
