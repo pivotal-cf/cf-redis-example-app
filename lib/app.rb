@@ -162,7 +162,7 @@ def redis_client
   elsif tls_enabled
     @client ||= RedisClient.tls(redis_credentials)
   else
-    @client ||= RedisClient.new(redis_credentials)
+    @client ||= RedisClient.default(redis_credentials)
   end
 
 end
