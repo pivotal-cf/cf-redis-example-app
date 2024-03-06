@@ -27,7 +27,7 @@ class RedisClient
   def initialize(credentials)
     Redis.new(
       host: credentials.fetch('host'),
-      port: credentials.fetch('tls_port'),
+      port: credentials.fetch('port'),
       password: credentials.fetch('password'),
       timeout: 30
     )
