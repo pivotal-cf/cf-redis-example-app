@@ -24,7 +24,10 @@ class SentinelClient
 end
 
 class RedisClient
-  def initialize(credentials)
+  def initialize
+  end
+
+  def self.default(credentials)
     Redis.new(
       host: credentials.fetch('host'),
       port: credentials.fetch('port'),
@@ -32,7 +35,6 @@ class RedisClient
       timeout: 30
     )
   end
-
   def self.using_sentinel(credentials)
     Redis.new(
       host: credentials.fetch('master_name'),
