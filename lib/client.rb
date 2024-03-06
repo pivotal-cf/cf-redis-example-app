@@ -27,7 +27,7 @@ class RedisClient
   def initialize(credentials)
     Redis.new(
       host: credentials.fetch('host'),
-      port: credentials.fetch('tls_port'),
+      port: credentials.fetch('port'),
       password: credentials.fetch('password'),
       timeout: 30
     )
@@ -42,10 +42,31 @@ class RedisClient
     )
   end
 
+  def self.using_sentinel_tls(credentials, version='')
+    ssl_params = {
+      verify_mode: OpenSSL::SSL::VERIFY_NONE,
+      ssl_version: version,
+    }
+    if version.empty?
+      ssl_params = {
+        verify_mode: OpenSSL::SSL::VERIFY_NONE
+      }
+    end
+
+    Redis.new(
+      host: credentials.fetch('master_name'),
+      password: credentials.fetch('password'),
+      sentinels: credentials.fetch('sentinels').map { | sentinel |  { host: sentinel["host"], port: sentinel["tls_port"] } },
+      ssl: true,
+      ssl_params: ssl_params,
+      timeout: 30
+      )
+  end
+
   def self.tls(credentials, version='')
     ssl_params = {
       verify_mode: OpenSSL::SSL::VERIFY_NONE,
-      version: version,
+      ssl_version: version,
     }
 
     if version.empty?
