@@ -47,7 +47,7 @@ class RedisClient
   def self.tls(credentials, version='')
     ssl_params = {
       verify_mode: OpenSSL::SSL::VERIFY_NONE,
-      version: version,
+      ssl_version: version,
     }
 
     if version.empty?
