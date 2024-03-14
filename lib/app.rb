@@ -139,15 +139,18 @@ def get_key_with_tls_version(key, version)
 end
 
 def redis_client_tls(version='TLSv1')
-  if version == 'TLSv1_3'
-    return @client_tls_13 ||= RedisTLS13.new(
-      host: redis_credentials.fetch('host'),
-      port: redis_credentials.fetch('tls_port'),
-      password: redis_credentials.fetch('password')
-    )
+  if redis_credentials.key?('sentinels')
+      @client ||= RedisClient.tls_using_sentinel(redis_credentials, version)
+  else
+    if version == 'TLSv1_3'
+      return @client_tls_13 ||= RedisTLS13.new(
+        host: redis_credentials.fetch('host'),
+        port: redis_credentials.fetch('tls_port'),
+        password: redis_credentials.fetch('password')
+      )
+    end
+    @client ||= RedisClient.tls(redis_credentials, version)
   end
-
-  @client ||= RedisClient.tls(redis_credentials, version)
 end
 
 def sentinel_client
@@ -158,13 +161,16 @@ def redis_client
   tls_enabled = ENV['tls_enabled'] || false
 
   if redis_credentials.key?('sentinels')
-    @client ||= RedisClient.using_sentinel(redis_credentials)
+    if tls_enabled
+      @client ||= RedisClient.tls_using_sentinel(redis_credentials, version='TLSv1_2')
+    else
+      @client ||= RedisClient.using_sentinel(redis_credentials)
+    end
   elsif tls_enabled
     @client ||= RedisClient.tls(redis_credentials)
   else
     @client ||= RedisClient.default(redis_credentials)
   end
-
 end
 
 def redis_credentials
