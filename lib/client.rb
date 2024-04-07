@@ -2,29 +2,7 @@
 require 'redis'
 require_relative 'redis_tls'
 
-class SentinelClient
-  def initialize(master_name, credentials)
-    @client = Redis.new(
-      host: credentials.fetch("host"),
-      port: credentials.fetch("port"),
-    )
-    @master_name = master_name
-  end
-
-  def get_master_info
-    @client.sentinel("master", @master_name)
-  end
-
-  def get_replicas_info
-    @client.sentinel("replicas", @master_name)
-  end
-
-  def fail_over
-    @client.sentinel("failover", @master_name)
-  end
-end
-
-class RedisClient
+class ClientRedis
   def initialize
   end
 
@@ -38,19 +16,21 @@ class RedisClient
   end
 
   def self.using_sentinel(credentials)
-    Redis.new(
-      host: credentials.fetch('master_name'),
-      password: credentials.fetch('password'),
-      sentinels: credentials.fetch('sentinels').map { | sentinel |  { host: sentinel["host"], port: sentinel["port"] } },
-      timeout: 30
-    )
-  end
+      Redis.new(
+        name: credentials.fetch('master_name'),
+        password: credentials.fetch('password'),
+        sentinel_password: credentials.fetch('sentinel_password'),
+        sentinels: credentials.fetch('sentinels').map { | sentinel |  { host: sentinel["host"], port: sentinel["port"] } },
+        timeout: 30
+      )
+    end
 
   def self.tls_using_sentinel(credentials, version='')
     if version.include?("TLSv1_3")
       master_redis = SentinelTLS13.new(
         host: credentials.fetch('sentinels').first['host'],
         port: credentials.fetch('sentinels').first['tls_port'],
+        sentinel_password: credentials.fetch("sentinel_password"),
         master_name: credentials.fetch('master_name')
       ).get_redis_instance
       return @client_tls_13 ||= RedisTLS13.new(
@@ -68,10 +48,10 @@ class RedisClient
           verify_mode: OpenSSL::SSL::VERIFY_NONE
         }
       end
-
       Redis.new(
-        host: credentials.fetch('master_name'),
+        name: credentials.fetch('master_name'),
         password: credentials.fetch('password'),
+        sentinel_password: credentials.fetch('sentinel_password'),
         sentinels: credentials.fetch('sentinels').map { | sentinel |  { host: sentinel["host"], port: sentinel["tls_port"] } },
         ssl: true,
         ssl_params: ssl_params,
@@ -91,7 +71,6 @@ class RedisClient
         verify_mode: OpenSSL::SSL::VERIFY_NONE
       }
     end
-
     Redis.new(
       host: credentials.fetch('host'),
       port: credentials.fetch('tls_port'),
