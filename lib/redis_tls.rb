@@ -42,11 +42,12 @@ class RedisTLS13
 end
 
 class SentinelTLS13
-  attr_reader :host, :port, :master_name
+  attr_reader :host, :port, :sentinel_password, :master_name
 
   def initialize(options)
     @host = options.fetch(:host)
     @port = options.fetch(:port)
+    @password = options.fetch(:sentinel_password)
     @master_name = options.fetch(:master_name)
   end
 
@@ -55,6 +56,12 @@ class SentinelTLS13
     sock = TCPSocket.new(@host, @port)
     client = TTTLS13::Client.new(sock, @host)
     client.connect
+
+    client.write("AUTH #{password}\r\n")
+    resp = client.read
+    if resp.nil? || !resp.strip.casecmp('+OK').zero?
+      raise "Invalid password"
+    end
 
     client.write("SENTINEL get-master-addr-by-name #{master_name}\n")
     resp = client.read

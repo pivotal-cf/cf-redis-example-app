@@ -16,39 +16,6 @@ You can run the following commands to create an instance and bind to it:
   end
 end
 
-get '/master' do
-  value = sentinel_client.get_master_info.to_json
-  if value
-    status 200
-    body value
-  else
-    status 400
-    body 'something went wrong'
-  end
-end
-
-get '/replicas' do
-  value = sentinel_client.get_replicas_info.to_json
-  if value
-    status 200
-    body value
-  else
-    status 400
-    body 'something went wrong'
-  end
-end
-
-get '/failover' do
-  value = sentinel_client.fail_over.to_json
-  if value
-    status 200
-    body value
-  else
-    status 400
-    body 'something went wrong'
-  end
-end
-
 put '/:key' do
   data = params[:data]
   if data
@@ -140,7 +107,7 @@ end
 
 def redis_client_tls(version='TLSv1')
   if redis_credentials.key?('sentinels')
-      @client ||= RedisClient.tls_using_sentinel(redis_credentials, version)
+      @client ||= ClientRedis.tls_using_sentinel(redis_credentials, version)
   else
     if version == 'TLSv1_3'
       return @client_tls_13 ||= RedisTLS13.new(
@@ -149,12 +116,8 @@ def redis_client_tls(version='TLSv1')
         password: redis_credentials.fetch('password')
       )
     end
-    @client ||= RedisClient.tls(redis_credentials, version)
+    @client ||= ClientRedis.tls(redis_credentials, version)
   end
-end
-
-def sentinel_client
-  @sentinel_client ||= SentinelClient.new(redis_credentials.fetch("master_name"), redis_credentials.fetch("sentinels").first)
 end
 
 def redis_client
@@ -162,14 +125,14 @@ def redis_client
 
   if redis_credentials.key?('sentinels')
     if tls_enabled
-      @client ||= RedisClient.tls_using_sentinel(redis_credentials, version='TLSv1_2')
+      @client ||= ClientRedis.tls_using_sentinel(redis_credentials, version='TLSv1_2')
     else
-      @client ||= RedisClient.using_sentinel(redis_credentials)
+      @client ||= ClientRedis.using_sentinel(redis_credentials)
     end
   elsif tls_enabled
-    @client ||= RedisClient.tls(redis_credentials)
+    @client ||= ClientRedis.tls(redis_credentials)
   else
-    @client ||= RedisClient.default(redis_credentials)
+    @client ||= ClientRedis.default(redis_credentials)
   end
 end
 
