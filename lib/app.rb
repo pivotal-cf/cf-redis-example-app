@@ -16,39 +16,6 @@ You can run the following commands to create an instance and bind to it:
   end
 end
 
-get '/master' do
-  value = sentinel_client.get_master_info.to_json
-  if value
-    status 200
-    body value
-  else
-    status 400
-    body 'something went wrong'
-  end
-end
-
-get '/replicas' do
-  value = sentinel_client.get_replicas_info.to_json
-  if value
-    status 200
-    body value
-  else
-    status 400
-    body 'something went wrong'
-  end
-end
-
-get '/failover' do
-  value = sentinel_client.fail_over.to_json
-  if value
-    status 200
-    body value
-  else
-    status 400
-    body 'something went wrong'
-  end
-end
-
 put '/:key' do
   data = params[:data]
   if data
@@ -151,10 +118,6 @@ def redis_client_tls(version='TLSv1')
     end
     @client ||= RedisClient.tls(redis_credentials, version)
   end
-end
-
-def sentinel_client
-  @sentinel_client ||= SentinelClient.new(redis_credentials.fetch("master_name"), redis_credentials.fetch("sentinels").first)
 end
 
 def redis_client

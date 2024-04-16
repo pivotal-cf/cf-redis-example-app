@@ -2,28 +2,6 @@
 require 'redis'
 require_relative 'redis_tls'
 
-class SentinelClient
-  def initialize(master_name, credentials)
-    @client = Redis.new(
-      host: credentials.fetch("host"),
-      port: credentials.fetch("port"),
-    )
-    @master_name = master_name
-  end
-
-  def get_master_info
-    @client.sentinel("master", @master_name)
-  end
-
-  def get_replicas_info
-    @client.sentinel("replicas", @master_name)
-  end
-
-  def fail_over
-    @client.sentinel("failover", @master_name)
-  end
-end
-
 class RedisClient
   def initialize
   end
