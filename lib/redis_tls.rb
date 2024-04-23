@@ -57,7 +57,7 @@ class SentinelTLS13
     client = TTTLS13::Client.new(sock, @host)
     client.connect
 
-    client.write("AUTH #{password}\r\n")
+    client.write("AUTH #{@password}\r\n")
     resp = client.read
     if resp.nil? || !resp.strip.casecmp('+OK').zero?
       raise "Invalid password"
