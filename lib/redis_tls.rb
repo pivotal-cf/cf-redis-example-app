@@ -11,8 +11,11 @@ class RedisTLS13
 
   def get(key)
     # no connection pooling for this example
+    settings = {
+      ca_file: "/etc/ssl/certs/ca-certificates.crt"
+    }
     sock = TCPSocket.new(@host, @port)
-    client = TTTLS13::Client.new(sock, @host)
+    client = TTTLS13::Client.new(sock, @host, **settings)
     client.connect
 
     client.write("AUTH #{password}\r\n")
@@ -53,8 +56,11 @@ class SentinelTLS13
 
   def get_redis_instance
     # no connection pooling for this example
+    settings = {
+          ca_file: "/etc/ssl/certs/ca-certificates.crt"
+    }
     sock = TCPSocket.new(@host, @port)
-    client = TTTLS13::Client.new(sock, @host)
+    client = TTTLS13::Client.new(sock, @host, **settings)
     client.connect
 
     client.write("AUTH #{@password}\r\n")

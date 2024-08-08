@@ -40,12 +40,12 @@ class ClientRedis
       )
     else
       ssl_params = {
-        verify_mode: OpenSSL::SSL::VERIFY_NONE,
+        ca_file: "/etc/ssl/certs/ca-certificates.crt",
         ssl_version: version,
       }
       if version.empty?
         ssl_params = {
-          verify_mode: OpenSSL::SSL::VERIFY_NONE
+          ca_file: "/etc/ssl/certs/ca-certificates.crt"
         }
       end
       Redis.new(
@@ -62,13 +62,13 @@ class ClientRedis
 
   def self.tls(credentials, version='')
     ssl_params = {
-      verify_mode: OpenSSL::SSL::VERIFY_NONE,
+      ca_file: "/etc/ssl/certs/ca-certificates.crt",
       ssl_version: version,
     }
 
     if version.empty?
       ssl_params = {
-        verify_mode: OpenSSL::SSL::VERIFY_NONE
+        ca_file: "/etc/ssl/certs/ca-certificates.crt"
       }
     end
     Redis.new(
