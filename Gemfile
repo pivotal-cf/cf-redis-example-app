@@ -5,6 +5,7 @@ gem 'sinatra', "3.0.6"
 gem 'redis'
 gem 'tttls1.3', '>=0.2.15'
 gem "webrick", "~> 1.8"
+gem 'openssl', '3.2.0'
 
 group :test do
   gem 'rack-test'
