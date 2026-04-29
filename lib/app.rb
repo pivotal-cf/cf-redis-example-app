@@ -11,7 +11,7 @@ You must bind a Redis service instance to this application.
 
 You can run the following commands to create an instance and bind to it:
 
-  $ cf create-service p-redis development redis-instance
+  $ cf create-service p-valkey development redis-instance
   $ cf bind-service <app-name> redis-instance})
   end
 end
