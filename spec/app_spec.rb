@@ -32,7 +32,7 @@ describe 'app' do
         get path
         expect(last_response.body).to match('You must bind a Redis service instance to this application.')
         expect(last_response.body).to match('You can run the following commands to create an instance and bind to it:')
-        expect(last_response.body).to match('\$ cf create-service p-valkey development redis-instance')
+        expect(last_response.body).to match('\$ cf create-service p-redis development redis-instance')
         expect(last_response.body).to match('\$ cf bind-service <app-name> redis-instance')
       end
     end
